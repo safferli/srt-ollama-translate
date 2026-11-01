@@ -84,7 +84,8 @@ no source in that language are skipped. Episodes with a single source never need
 | `--from`, `--source` | none | Source language; picks the source when an episode has several |
 | `--model` | `hf.co/17slever17/translate-gemma-4-sub-e4b-GGUF:Q4_K_XL` | Ollama model ID |
 | `--url` | `http://localhost:11434/api/chat` | Ollama chat API endpoint |
-| `--context` | `5` | Previous source/translation pairs passed as context |
+| `--context` | `10` | Previous source/translation pairs passed as context |
+| `--num-ctx` | `4096` | Ollama context window in tokens; sent explicitly so the server default can't truncate the prompt |
 | `--style` | `neutral` | One of `neutral`, `friendly`, `official` |
 | `--max-cues` | all | Stop after N cues per file and keep a `.partial` checkpoint |
 

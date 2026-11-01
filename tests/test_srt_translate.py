@@ -175,7 +175,7 @@ def test_end_to_end_with_fake_ollama(tmp_path, monkeypatch, fake_ollama):
         "EN:Comment ça va ?\ndeuxième ligne",
     ]
     assert len(_FakeOllama.seen_requests) == 2
-    assert _FakeOllama.seen_requests[0]["options"] == {"temperature": 0, "num_predict": 256}
+    assert _FakeOllama.seen_requests[0]["options"] == {"temperature": 0, "num_predict": 256, "num_ctx": 4096}
 
     # Existing outputs are never overwritten.
     assert main(["--url", fake_ollama]) == 0

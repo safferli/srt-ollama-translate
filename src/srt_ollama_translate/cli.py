@@ -7,7 +7,7 @@ import sys
 from urllib.error import URLError
 
 from .languages import language_from_tag
-from .ollama import DEFAULT_MODEL, DEFAULT_URL, STYLES, OllamaSettings
+from .ollama import DEFAULT_MODEL, DEFAULT_NUM_CTX, DEFAULT_URL, STYLES, OllamaSettings
 from .translator import TranslationOptions, plan_jobs, translate_file
 
 DESCRIPTION = """\
@@ -93,7 +93,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--model", default=DEFAULT_MODEL, help="Ollama model ID")
     parser.add_argument("--url", default=DEFAULT_URL, help="Ollama chat API endpoint")
     parser.add_argument(
-        "--context", type=int, default=5, help="Previous source/translation pairs to provide as context (default: 5)"
+        "--context", type=int, default=10, help="Previous source/translation pairs to provide as context (default: 10)"
+    )
+    parser.add_argument(
+        "--num-ctx",
+        type=int,
+        default=DEFAULT_NUM_CTX,
+        help=f"Ollama context window in tokens (default: {DEFAULT_NUM_CTX})",
     )
     parser.add_argument("--style", choices=STYLES, default="neutral")
     parser.add_argument(
@@ -107,8 +113,8 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
-    if args.context < 0 or (args.max_cues is not None and args.max_cues < 1):
-        parser.error("--context must be >= 0 and --max-cues must be >= 1")
+    if args.context < 0 or args.num_ctx < 1 or (args.max_cues is not None and args.max_cues < 1):
+        parser.error("--context must be >= 0, --num-ctx >= 1 and --max-cues >= 1")
     try:
         target = language_from_tag(args.target)
     except ValueError as exc:
@@ -142,7 +148,7 @@ def main(argv: list[str] | None = None) -> int:
 
     options = TranslationOptions(
         target=target,
-        ollama=OllamaSettings(model=args.model, url=args.url, style=args.style),
+        ollama=OllamaSettings(model=args.model, url=args.url, style=args.style, num_ctx=args.num_ctx),
         context=args.context,
         max_cues=args.max_cues,
     )

@@ -21,7 +21,7 @@ class Job(NamedTuple):
 class TranslationOptions:
     target: Language
     ollama: OllamaSettings
-    context: int = 5
+    context: int = 10
     max_cues: int | None = None
 
 

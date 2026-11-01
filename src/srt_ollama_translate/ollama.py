@@ -12,6 +12,8 @@ DEFAULT_MODEL = "hf.co/17slever17/translate-gemma-4-sub-e4b-GGUF:Q4_K_XL"
 DEFAULT_URL = "http://localhost:11434/api/chat"
 STYLES = ("neutral", "friendly", "official")
 MAX_TOKENS = 256
+# Explicit so the window doesn't depend on the Ollama server default, which silently truncates the prompt.
+DEFAULT_NUM_CTX = 4096
 
 
 @dataclass(frozen=True)
@@ -19,6 +21,7 @@ class OllamaSettings:
     model: str = DEFAULT_MODEL
     url: str = DEFAULT_URL
     style: str = "neutral"
+    num_ctx: int = DEFAULT_NUM_CTX
 
 
 def translate_cue(
@@ -54,7 +57,7 @@ def translate_cue(
             {"role": "user", "content": "\n\n".join(prompt_parts)},
         ],
         "stream": False,
-        "options": {"temperature": 0, "num_predict": MAX_TOKENS},
+        "options": {"temperature": 0, "num_predict": MAX_TOKENS, "num_ctx": settings.num_ctx},
     }
     request = Request(
         settings.url,
