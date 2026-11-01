@@ -1,0 +1,30 @@
+[project]
+name = "srt-ollama-translate"
+version = "0.1.0"
+description = "Translate SRT subtitle files with a local Ollama model."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pycountry>=26.2.16",
+]
+
+[project.scripts]
+translate-srt = "srt_ollama_translate.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B"]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true

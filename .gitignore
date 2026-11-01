@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+
+# Subtitle outputs and in-progress checkpoints
+*.partial
+*.tmp
+*.partial.json
+
+# macOS
+.DS_Store
+
+# example subtitles to test 
+samples/
